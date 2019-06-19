@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -25,9 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $me = ImapMessage::first();
-        $file = Storage::disk('dropbox')->mimeType($me->attachments[0]);
-
-        dd($file);
+        return view('home');
     }
 }
