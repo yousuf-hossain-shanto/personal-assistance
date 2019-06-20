@@ -26,7 +26,14 @@ return [
 
     'send_to' => [
         'yousuf.hossain.shanto@gmail.com',
-        'plugin.triangle@gmail.com'
+        'emdabir94@gmail.com',
+        'hridoyrupg@gmail.com',
+        'rhm9840@gmail.com',
+        'asmaakter9548@gmail.com',
+        'runaakter230063@gmail.com',
+        'shamimr0421@gmail.com',
+        'sopnilshapon@gmail.com',
+        'sumicsl02@gmail.com',
     ],
 
     /*
