@@ -4,7 +4,7 @@
     </div>
 @endif
 @if ($errors->any())
-    @foreach($errors as $error)
+    @foreach($errors->all() as $error)
         <div class="alert alert-danger" role="alert">
             {{ $error }}
         </div>

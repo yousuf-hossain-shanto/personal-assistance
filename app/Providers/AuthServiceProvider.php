@@ -16,6 +16,9 @@ class AuthServiceProvider extends ServiceProvider
          'App\ExpenseHead' => 'App\Policies\ExpenseHeadPolicy',
          'App\RecurringExpense' => 'App\Policies\RecurringExpensePolicy',
          'App\Expense' => 'App\Policies\ExpensePolicy',
+
+         'App\Wallet' => 'App\Policies\WalletPolicy',
+         'App\Earning' => 'App\Policies\EarningPolicy',
     ];
 
     /**

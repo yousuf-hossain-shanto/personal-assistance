@@ -64,6 +64,26 @@ class User extends Authenticatable
     }
 
     /*
+     * Wallets
+     * */
+
+    public function wallets()
+
+    {
+
+        return $this->hasMany(Wallet::class, 'user_id', 'id');
+
+    }
+
+    public function earnings()
+
+    {
+
+        return $this->hasMany(Earning::class, 'user_id', 'id');
+
+    }
+
+    /*
      * Education Related
      * */
 

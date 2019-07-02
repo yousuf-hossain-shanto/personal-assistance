@@ -19,6 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::middleware('auth')->resource('wallet', 'WalletController');
+Route::middleware('auth')->resource('earning', 'EarningController');
 
 Route::resource('expense', 'ExpenseController');
 Route::resource('expense-head', 'ExpenseHeadController');

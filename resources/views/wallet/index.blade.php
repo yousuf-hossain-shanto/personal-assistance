@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page_title', 'Expenses')
+@section('page_title', 'Wallets')
 
 @section('content')
     <div class="container">
@@ -8,7 +8,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        Expenses
+                        Wallets
                         <button class="float-right btn btn-success btn-sm btn-new" data-toggle="modal"
                                 data-target="#newModal">Add New
                         </button>
@@ -16,48 +16,28 @@
                     <div class="card-body">
                         @include('layouts.notify')
 
+
                         <table class="table table-stripped table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Title</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Remarks</th>
-                                <th>Status</th>
+                                <th>Balance</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($expenses as $expense)
+                            @foreach($wallets as $wallet)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $expense->head->title }}</td>
-                                    <td>{{ $expense->amount }} {{ config('app.currency') }}</td>
-                                    <td>{{ $expense->date->format('d M Y') }}</td>
-                                    <td>{{ $expense->remarks }}</td>
+                                    <td>{{ $wallet->name }}</td>
+                                    <td>{{ $wallet->balance }} {{ config('app.currency') }}</td>
                                     <td>
-                                        @if($expense->status == 0)
-                                            <span class="badge badge-warning">Pending</span>
-                                        @elseif($expense->status == 1)
-                                            <span class="badge badge-warning">Paid</span>
-                                        @else
-                                            <span class="badge badge-danger">Failed</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($expense->status == 0)
-                                        <button class="btn btn-warning btn-edit" data-id="{{ $expense->id }}"
-                                                data-expense_head_id="{{ $expense->expense_head_id }}"
-                                                data-date="{{ $expense->date->format('Y-m-d') }}"
-                                                data-amount="{{ $expense->amount }}"
-                                                data-remarks="{{ $expense->remarks }}"
-                                                data-status="{{ $expense->status }}"
-                                                data-wallet_id="{{ $expense->wallet_id }}">
+                                        <button class="btn btn-warning btn-edit" data-id="{{ $wallet->id }}"
+                                                data-name="{{ $wallet->name }}">
                                             Edit
                                         </button>
-                                        @endif
-                                        <button class="btn btn-danger btn-delete" data-id="{{ $expense->id }}">Delete
+                                        <button class="btn btn-danger btn-delete" data-id="{{ $wallet->id }}">Delete
                                         </button>
                                     </td>
                                 </tr>
@@ -66,7 +46,7 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        {{ $expenses->links() }}
+                        {{ $wallets->links() }}
                     </div>
                 </div>
             </div>
@@ -78,32 +58,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">New Expense</h4>
+                    <h4 class="modal-title">New Wallet</h4>
                     <button type="button" class="float-right close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span></button>
                 </div>
-                <form action="{{ route('expense.store') }}" method="post">
+                <form action="{{ route('wallet.store') }}" method="post">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label class="control-label">Expense Head</label>
-                            <select name="expense_head_id" class="form-control" required>
-                                @foreach($heads as $head)
-                                    <option value="{{ $head->id }}">{{ $head->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Date</label>
-                            <input type="date" name="date" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Amount</label>
-                            <input type="text" name="amount" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Remarks</label>
-                            <textarea name="remarks" class="form-control"></textarea>
+                            <label class="control-label">Wallet Name</label>
+                            <input type="text" name="name" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -121,7 +85,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Expense</h4>
+                    <h4 class="modal-title">Edit Wallet</h4>
                     <button type="button" class="float-right close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span></button>
                 </div>
@@ -130,41 +94,8 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="form-group">
-                            <label class="control-label">Expense Head</label>
-                            <select name="expense_head_id" id="expense_head_id" class="form-control" required>
-                                @foreach($heads as $head)
-                                    <option value="{{ $head->id }}">{{ $head->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Wallet</label>
-                            <select name="wallet_id" id="wallet_id" class="form-control">
-                                <option value="">No Wallet</option>
-                                @foreach($wallets as $wallet)
-                                    <option value="{{ $wallet->id }}">{{ $wallet->name }} ({{ $wallet->balance }} {{ config('app.currency') }})</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Status</label>
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="0">Pending</option>
-                                <option value="1">Paid</option>
-                                <option value="2">Failed</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Date</label>
-                            <input type="date" name="date" id="date" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Amount</label>
-                            <input type="text" name="amount" id="amount" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Remarks</label>
-                            <textarea name="remarks" id="remarks" class="form-control"></textarea>
+                            <label class="control-label">Name</label>
+                            <input type="text" name="name" id="name" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -182,7 +113,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Expense</h4>
+                    <h4 class="modal-title">Delete Wallet</h4>
                     <button type="button" class="float-right close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span></button>
                 </div>
@@ -190,7 +121,7 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-body">
-                        <h3 class="text-center">Are you sure to delete this expense?</h3>
+                        <h3 class="text-center">Are you sure to delete this wallet?</h3>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
@@ -225,7 +156,7 @@
                     });
                     datas.forEach(function (data) {
                         if (data.name == 'id') {
-                            var url = '{{ url('expense') }}/' + data.value;
+                            var url = '{{ url('wallet') }}/' + data.value;
                             $('#edit-modal form').prop('action', url);
                         }
                         $('#' + data.name).val(data.value);
@@ -236,7 +167,7 @@
                 $(document).on('click', '.btn-delete', function (e) {
                     e.preventDefault();
                     var id = $(this).data('id');
-                    var url = '{{ url('expense') }}/' + id
+                    var url = '{{ url('wallet') }}/' + id
                     $('#delete-modal form').prop('action', url);
                     $('#delete-modal').modal();
                 })

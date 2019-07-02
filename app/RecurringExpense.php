@@ -38,4 +38,12 @@ class RecurringExpense extends Model
         }
 
     }
+
+    public function getLastProcessedAttribute()
+
+    {
+
+
+
+    }
 }

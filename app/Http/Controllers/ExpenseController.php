@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,18 +18,9 @@ class ExpenseController extends Controller
     {
         $expenses = Auth::user()->expenses()->paginate();
         $heads = Auth::user()->ExpenseHeads;
+        $wallets = Auth::user()->wallets;
 
-        return view('expense.index', compact('expenses', 'heads'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('expense.index', compact('expenses', 'heads', 'wallets'));
     }
 
     /**
@@ -67,17 +59,30 @@ class ExpenseController extends Controller
     {
         $this->authorize('update', $expense);
 
-        $request->validate([
+        $rules = [
             'expense_head_id' => 'required|exists:expense_heads,id',
             'date' => 'required|date_format:Y-m-d',
-            'amount' => 'required|numeric'
-        ]);
+            'amount' => 'required|numeric',
+            'status' => 'required|in:0,1,2'
+        ];
+
+        if ($request->status == 1) {
+            $rules['wallet_id'] = 'required|exists:wallets,id';
+        }
+
+        $request->validate($rules);
+
+        if ($request->wallet_id) {
+            $wallet = Wallet::find($request->wallet_id);
+            $this->authorize('update', $wallet);
+            if ($wallet->balance < $expense->amount) return redirect()->back()->withErrors('Not enough balance');
+        }
 
         $head = Auth::user()->ExpenseHeads()->where('id', $request->expense_head_id)->first();
 
         if (!$head) return abort(404);
 
-        $res = $expense->update($request->only(['expense_head_id', 'date', 'amount', 'remarks']));
+        $res = $expense->update($request->only(['expense_head_id', 'date', 'amount', 'remarks', 'status', 'wallet_id']));
 
         if (!$res) return redirect()->back()->withErrors('Unexpected error! Please try again');
 
