@@ -20,6 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('auth')->resource('wallet', 'WalletController');
+Route::middleware('auth')->get('transfer', 'TransferController@index')->name('transfer.index');
+Route::middleware('auth')->post('transfer', 'TransferController@store')->name('transfer.store');
 Route::middleware('auth')->resource('earning', 'EarningController');
 
 Route::resource('expense', 'ExpenseController');
