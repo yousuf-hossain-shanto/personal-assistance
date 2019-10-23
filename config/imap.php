@@ -35,7 +35,8 @@ return [
         'sopnilshapon@gmail.com',
         'sumicsl02@gmail.com',
         'rabbularafat@gmail.com',
-        'airinakter520@gmail.com'
+        'airinakter520@gmail.com',
+        'habibur_rahman_2019@hotmail.com'
     ],
 
     /*
