@@ -47,11 +47,19 @@ class User extends Authenticatable
 
     }
 
+    public function expense_sectors()
+
+    {
+
+        return $this->hasMany(ExpenseSector::class, 'user_id', 'id');
+
+    }
+
     public function expenses()
 
     {
 
-        return $this->hasManyThrough(Expense::class, ExpenseHead::class, 'user_id', 'expense_head_id', 'id', 'id');
+        return $this->hasMany(Expense::class, 'user_id', 'id');
 
     }
 
@@ -80,6 +88,14 @@ class User extends Authenticatable
     {
 
         return $this->hasMany(Transfer::class, 'user_id', 'id');
+
+    }
+
+    public function earning_sources()
+
+    {
+
+        return $this->hasMany(EarningSource::class, 'user_id', 'id');
 
     }
 

@@ -22,7 +22,7 @@ class ExpenseHeadController extends Controller
      */
     public function index()
     {
-        $heads = Auth::user()->ExpenseHeads()->paginate();
+        $heads = Auth::user()->ExpenseHeads()->orderBy('id', 'DESC')->paginate();
 
         return view('expense.head', compact('heads'));
     }

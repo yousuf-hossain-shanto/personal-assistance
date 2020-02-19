@@ -13,6 +13,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+         'App\EarningSource' => 'App\Policies\EarningSourcePolicy',
+         'App\ExpenseSector' => 'App\Policies\ExpenseSectorPolicy',
+
          'App\ExpenseHead' => 'App\Policies\ExpenseHeadPolicy',
          'App\RecurringExpense' => 'App\Policies\RecurringExpensePolicy',
          'App\Expense' => 'App\Policies\ExpensePolicy',

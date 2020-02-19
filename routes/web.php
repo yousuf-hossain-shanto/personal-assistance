@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,6 +19,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::middleware('auth')->resource('earning-source', 'EarningSourceController');
+Route::middleware('auth')->resource('expense-sector', 'ExpenseSectorController');
 
 Route::middleware('auth')->resource('wallet', 'WalletController');
 Route::middleware('auth')->get('transfer', 'TransferController@index')->name('transfer.index');

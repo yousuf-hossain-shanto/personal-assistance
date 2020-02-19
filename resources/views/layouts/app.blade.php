@@ -10,10 +10,10 @@
     <title>@yield('page_title') | {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    {{--<link rel="dns-prefetch" href="//fonts.gstatic.com">--}}
-    {{--<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">--}}
+{{--<link rel="dns-prefetch" href="//fonts.gstatic.com">--}}
+{{--<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">--}}
 
-    <!-- Styles -->
+<!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     @yield('css')
@@ -42,11 +42,29 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('expense-sector.index') }}">
+                                    {{ __('Sectors') }}
+                                </a>
                                 <a class="dropdown-item" href="{{ route('expense-head.index') }}">
                                     {{ __('Heads') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('expense-recurring.index') }}">
                                     {{ __('Recurring Expenses') }}
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="earningDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Earning <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="earningDropdown">
+                                <a class="dropdown-item" href="{{ route('earning-source.index') }}">
+                                    {{ __('Sources') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('earning.index') }}">
+                                    {{ __('Earnings') }}
                                 </a>
                             </div>
                         </li>
